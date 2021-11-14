@@ -7,12 +7,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Web app controller class for sample application. Contains a function that runs a query and displays the results.
- *
- * @author João André Martins
- * @author Chengyuan Zhao
- */
 @RestController
 public class WebController {
 
@@ -22,8 +16,8 @@ public class WebController {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    @GetMapping("/getTuples")
-    public List<String> getTuples() {
+    @GetMapping("/getUsers")
+    public List<String> getUsers() {
         return this.jdbcTemplate.queryForList("SELECT * FROM user").stream()
                 .map(m -> m.values().toString())
                 .collect(Collectors.toList());
