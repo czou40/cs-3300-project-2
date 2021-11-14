@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "bill-splitter-331718",
+  "private_key_id": "df5c7122b89f7366031a199cc38b4b2688230abc",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDgFjqPGHiZRRNQ\ni7HN1fdyxbkBVq45lJZhYVK/tgeas4LtgNgHZIIHJtofwRLtHr8hZYed3LRoSwCE\npyCakp29+oLAVrPIhfwHsWMGAaNVUcwQ1KjScGnH0O5oIdEqwubxcAqRATHSxO2V\nVZ/iuOuThu9rwEz9kWKoZuwjm1721o0+wuSOmNGWHgHSotEpzPhuiAY+ALntKvO3\nhyqY4TcBIlOOZtuHXhENmcbkWUO9tKzMjKNuLifa+I8gCXML43y63X3elurZq2aN\nrv/gWkSdBG9JK1Vv5zGIfItvzgjih5+3qokqSyLQ9tKsWcUmzTdo2Mf6Zv4Ifz6k\nO8JLuvhTAgMBAAECggEAFnGjg9mLmq5UdOjI8jjQA+rR0NSBtrqvJSm+Q/1TXadF\nIcyZ1oO2kkjN6AhKgP1nX0zv/Fuypg99CcxDc7fjnLeOiP0mHJtu1sZpiJx5Y35B\n1h22mv0vWxgOCNf6PzIuN1hldoiMGPQoZ6Cf1vF2htwo9r3X+D2rh/pnBFn3dPlw\nRUy44x3sdEUMAEX4R0BNe9t2DHtSZkliMhNR6PM08Vxy14chQwOrcbiXz6JO7lJX\nHFa1CndWf1ssGT+OrsuCpjs83A1cqSLRVtu/S9fyB/4dP2p4w8N8smtD0P7y/tWL\nv233cxph6brfq2OgSmboe8DSde0MWHi1WX/vKR8JYQKBgQD1/gWq8TLVJ3TPwweu\nogjtPUA8pRpNquwnS5SmaPP66JQuYySVydSAE6qYJ1oLzY2+zM7uF5+6wRP8drhz\niQuAYkLlPEP7A187rKYeRPPfODFDDEvOW/1gE+/llF37uF4zGndujixB996FN+zr\nsRBwaLf7GRQ6C4bdOE8p2eJ/5QKBgQDpNBBx8CBFCzqUSn+APXxo8Zg13XzaVXEr\nIuELbki7/uqlj1Xl3wqj9FEXpBwiiot+0h4QZdRvBivjJGpt3nzS8AI3oNVTvLvE\nyb954aFyqA5nxWLf6XiK3iofh2aJHfj2e2+tNd4ZASgpBJlSmD7FVjDIP7lTm213\npNClMhxj1wKBgGaRWk+ibm2OHBic21EnYs14opYmyUblI75mtz6DuGdAHrkQwapr\nE12r1Y/HqLYPKTELOKTx2LoH04uK/PG/jLolPntSm43IJCc/n6wzV/QU/AVW1Szg\nEk/DQF3bdSyF/VEVkgLY6P9AmNm3LeRAWfhk0YGzPUnOkJcg6XEr1lM5AoGAVx2N\n7yJGy8QQFAloa92MNh/aPnUJCP7WEckrzHtcTG5D9aj/66lQbkL8cBpsMDMVPUD8\n3h9MJlVl26pk37o3Yw0ppuI8DtX4RuEe2EcDarOA/h7serzavPWVQsXv9dTuhhVC\neLAg0bJu8DO5mvMor8ss2gGEF8l+MS2ui6eWl20CgYEAx4Go6ML7iwVuqJwQJFGQ\nlkNNP0RAY2gcAC/O/LHfcmI0oDOHo9hC1s1VOd5y92oRO1fprjh8oTxG7MaMn5QO\nNC6NEJSH9YSn0PanYv5wh+tFQzeV1Y5EGkaNcdJh4SKo3nPAC7GW6s3bRO6lIw/Y\n96kjiVaL1PF7Xo4f+5LzdxU=\n-----END PRIVATE KEY-----\n",
+  "client_email": "bill-splitter@bill-splitter-331718.iam.gserviceaccount.com",
+  "client_id": "109282372650354693220",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/bill-splitter%40bill-splitter-331718.iam.gserviceaccount.com"
+}
