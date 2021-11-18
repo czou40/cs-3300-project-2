@@ -4,7 +4,8 @@ import SockJsClient from 'react-stomp';
 import { encodeItem } from './util';
 import Item from './components/Item';
 
-
+const QUEUE = '/user/queue/test';
+const TOPIC = '/topic/test';
 
 function App() {
   const [wsClient, setWsClient] = useState(null);
@@ -17,13 +18,13 @@ function App() {
     try {
       wsClient.sendMessage('/test', js);
     } catch (e) {
-      alert("Cannot connect to the server!")
+      alert("Cannot connect to the server! " + e.toString());
     }
   };
 
-  const handleReceiveMessage = (item) => {
+  const handleReceiveMessage = (item, route) => {
     console.log(item);
-    setItems([...items, item]);
+    setItems(route == QUEUE ? items.concat(item) :[...items, item]);
   };
 
   const displayedItems = items.length > 0
@@ -33,7 +34,7 @@ function App() {
     <p>Items will be shown here.</p>;
   return (
     <div>
-      <SockJsClient url='http://localhost:8080/ws' topics={['/topic/test']}
+      <SockJsClient url='http://localhost:8080/ws' topics={[QUEUE,TOPIC]}
         onMessage={handleReceiveMessage}
         ref={(client) => { setWsClient(client); }} />
       <h1>Bill Splitter</h1>
