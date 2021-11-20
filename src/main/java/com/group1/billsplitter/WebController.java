@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import java.io.*;
 
 import entities.Account;
+import entities.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,12 +25,42 @@ public class WebController {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    // Account handlers
-    @GetMapping("/getUsers")
-    public List<Map<String, Object>> getUsers() {
-        return this.jdbcTemplate.queryForList("SELECT * FROM user");
+    // User handlers
+    @GetMapping("/getUser/{username}")
+    public User getUser(@PathVariable String username) {
+        List<Map<String, Object>> userList = this.jdbcTemplate.queryForList("SELECT * FROM users WHERE username = ?", username);
+        if (userList.size() == 0) {
+            return new User("", "");
+        }
+        Map<String, Object> user = userList.get(0);
+        return new User((String) user.get("username"), (String) user.get("name"));
     }
 
+    @PostMapping("/createUser")
+    public void createUser(@RequestBody User newUser) {
+        jdbcTemplate.update(
+                "INSERT INTO users (username, name) VALUES (?, ?)",
+                newUser.getUsername(), newUser.getName()
+        );
+    }
+
+    @PutMapping("/updateUser")
+    public void updateUser(@RequestBody User newUser) {
+        jdbcTemplate.update(
+                "UPDATE users SET name = ? WHERE username = ?",
+                newUser.getName(), newUser.getUsername()
+        );
+    }
+
+    @DeleteMapping("/deleteUser/{username}")
+    public void deleteUser(@PathVariable String username) {
+        jdbcTemplate.update(
+                "DELETE FROM users WHERE username = ?",
+                username
+        );
+    }
+
+    // Account handlers
     @GetMapping("/getAccounts/{username}")
     public List<Map<String, Object>> getAccounts(@PathVariable String username) {
         return this.jdbcTemplate.queryForList("SELECT * FROM accounts WHERE username = ?", username);
