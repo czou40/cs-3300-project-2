@@ -1,2 +1,7 @@
 com/group1/billsplitter/BillSplitterApplication.class
+entities/Item.class
+entities/Account.class
+com/group1/billsplitter/configurations/WebSocketConfiguration.class
+entities/Message.class
 com/group1/billsplitter/WebController.class
+com/group1/billsplitter/controllers/WebSocketController.class
