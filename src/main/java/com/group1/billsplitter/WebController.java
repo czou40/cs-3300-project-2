@@ -62,8 +62,8 @@ public class WebController {
 
     // Account handlers
     @GetMapping("/getAccounts/{username}")
-    public List<Map<String, Object>> getAccounts(@PathVariable String username) {
-        return this.jdbcTemplate.queryForList("SELECT * FROM accounts WHERE username = ?", username);
+    public List<Account> getAccounts(@PathVariable String username) {
+        return this.jdbcTemplate.queryForList("SELECT * FROM accounts WHERE username = ?", username).stream().map(obj -> new Account((String) obj.get("username"), (String) obj.get("paymentMethod"), (String) obj.get("details"))).collect(Collectors.toList());
     }
 
     @PostMapping("/addAccount")
