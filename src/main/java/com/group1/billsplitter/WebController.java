@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import java.io.*;
 
 import entities.Account;
+import entities.Bill;
 import entities.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -87,6 +88,41 @@ public class WebController {
         jdbcTemplate.update(
                 "DELETE FROM accounts WHERE username = ? AND paymentMethod = ?",
                 account.getUsername(), account.getPaymentMethod()
+        );
+    }
+
+    // Bill handlers
+    @GetMapping("/getBorrows/{username}")
+    public List<Bill> getBorrows(@PathVariable String username) {
+        return this.jdbcTemplate.queryForList("SELECT * FROM bills WHERE borrower = ?", username).stream().map(obj -> new Bill((Integer) obj.get("id"), (String) obj.get("lender"), (String) obj.get("borrower"), (Double) obj.get("amount"), (String) obj.get("note"))).collect(Collectors.toList());
+    }
+
+    @GetMapping("/getLends/{username}")
+    public List<Bill> getLends(@PathVariable String username) {
+        return this.jdbcTemplate.queryForList("SELECT * FROM bills WHERE lender = ?", username).stream().map(obj -> new Bill((Integer) obj.get("id"), (String) obj.get("lender"), (String) obj.get("borrower"), (Double) obj.get("amount"), (String) obj.get("note"))).collect(Collectors.toList());
+    }
+
+    @PostMapping("/addBill")
+    public void addBill(@RequestBody Bill newBill) {
+        jdbcTemplate.update(
+                "INSERT INTO bills (borrower, lender, amount, note) VALUES (?, ?, ?, ?)",
+                newBill.getBorrower(), newBill.getLender(), newBill.getAmount(), newBill.getNote()
+        );
+    }
+
+    @PutMapping("/updateBill")
+    public void updateBill(@RequestBody Bill newBill) {
+        jdbcTemplate.update(
+                "UPDATE bills SET borrower = ?, lender = ?, amount = ?, note = ? WHERE id = ?",
+                newBill.getBorrower(), newBill.getLender(), newBill.getAmount(), newBill.getNote(), newBill.getId()
+        );
+    }
+
+    @DeleteMapping("/deleteBill/{id}")
+    public void deleteBill(@PathVariable Integer id) {
+        jdbcTemplate.update(
+                "DELETE FROM bills WHERE id = ?",
+                id
         );
     }
 }
