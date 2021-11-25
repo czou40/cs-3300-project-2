@@ -24,7 +24,7 @@ function App() {
 
   const handleReceiveMessage = (item, route) => {
     console.log(item);
-    setItems(route == QUEUE ? items.concat(item) :[...items, item]);
+    setItems(route === QUEUE ? items.concat(item) :[...items, item]);
   };
 
   const displayedItems = items.length > 0

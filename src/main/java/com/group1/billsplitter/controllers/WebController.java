@@ -1,4 +1,4 @@
-package com.group1.billsplitter;
+package com.group1.billsplitter.controllers;
 
 import java.util.List;
 import java.util.stream.Collectors;
