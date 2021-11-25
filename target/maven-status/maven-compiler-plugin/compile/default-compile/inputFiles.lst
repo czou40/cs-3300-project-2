@@ -1,2 +1,8 @@
 /Users/mukhtarkussaiynbekov/projects/CS3300-project-2/src/main/java/com/group1/billsplitter/WebController.java
+/Users/mukhtarkussaiynbekov/projects/CS3300-project-2/src/main/java/com/group1/billsplitter/controllers/WebSocketController.java
 /Users/mukhtarkussaiynbekov/projects/CS3300-project-2/src/main/java/com/group1/billsplitter/BillSplitterApplication.java
+/Users/mukhtarkussaiynbekov/projects/CS3300-project-2/src/main/java/com/group1/billsplitter/configurations/WebSocketConfiguration.java
+/Users/mukhtarkussaiynbekov/projects/CS3300-project-2/src/main/java/entities/Item.java
+/Users/mukhtarkussaiynbekov/projects/CS3300-project-2/src/main/java/entities/Account.java
+/Users/mukhtarkussaiynbekov/projects/CS3300-project-2/src/main/java/entities/User.java
+/Users/mukhtarkussaiynbekov/projects/CS3300-project-2/src/main/java/entities/Message.java
