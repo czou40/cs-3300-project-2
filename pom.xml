@@ -103,6 +103,18 @@ See https://github.com/GoogleCloudPlatform/cloud-opensource-java/wiki/The-Google
 			</plugin>
 
 			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>appengine-maven-plugin</artifactId>
+				<version>2.4.0</version>
+				<configuration>
+					<deploy.projectId>bill-splitter-331718</deploy.projectId>
+					<deploy.version>2</deploy.version>
+					<stage.enableJarSplitting>true</stage.enableJarSplitting>
+					<deploy.stopPreviousVersion>true</deploy.stopPreviousVersion>
+					<cloudSdkHome>/Users/mukhtarkussaiynbekov/google-cloud-sdk</cloudSdkHome>
+				</configuration>
+			</plugin>
+			<plugin>
 				<artifactId>maven-deploy-plugin</artifactId>
 				<configuration>
 					<skip>true</skip>
