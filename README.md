@@ -1,8 +1,8 @@
-##CS3300-project-2
+## CS3300-project-2
 
 Team Members: Enioluwa Daniel Adebisi, Mukhtar Kussaiynbekov, Zach McGee, Samuel Zhang, Chunhao Zou
 
-###Workflow
+### Workflow
 To use the deployed version, go to:
 [link here]
 
@@ -17,10 +17,12 @@ To run the frontend of the project, follow these steps:
 2. run command `npm install`
 3. run command `npm run start`
 
-###Usage
+To run unit tests, run this command: `npm test`
+
+### Usage
 [incomplete]
 
-###Software
+### Software
 - `\src\main\java` contains the backend code
     - `..\com.group1.billsplitter` contains the SpringBoot controllers and SQL database integration
     - `..\entities` contains the Java objects representing bills and related things
