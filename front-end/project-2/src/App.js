@@ -13,8 +13,9 @@ function App() {
   const [nameValue, setNameValue] = useState("");
   const [priceValue, setPriceValue] = useState(0.00);
   const [quantityValue, setQuantityValue] = useState(0);
+  const [borrowerValue, setBorrowerValue] = useState("");
   const handleSend = () => {
-    const js = encodeItem(nameValue, priceValue, quantityValue);
+    const js = encodeItem(nameValue, priceValue, quantityValue, borrowerValue);
     try {
       wsClient.sendMessage('/test', js);
     } catch (e) {
@@ -47,6 +48,9 @@ function App() {
       <br />
       <label>Quantity:</label>
       <input type="number" step="1" value={quantityValue} onChange={(e) => { setQuantityValue(e.target.value) }} />
+      <br />
+      <label>Borrower:</label>
+      <input type="number" step="1" value={borrowerValue} onChange={(e) => { setBorrowerValue(e.target.value) }} />
       <br />
       <button onClick={handleSend}>Update Item</button>
     </div>
