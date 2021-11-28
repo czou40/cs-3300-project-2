@@ -13,13 +13,14 @@ function App() {
   const [nameValue, setNameValue] = useState("");
   const [priceValue, setPriceValue] = useState(0.00);
   const [quantityValue, setQuantityValue] = useState(0);
-  const [borrowerValue, setBorrowerValue] = useState("");
   const handleSend = () => {
-    const js = encodeItem(nameValue, priceValue, quantityValue, borrowerValue);
-    try {
-      wsClient.sendMessage('/test', js);
-    } catch (e) {
-      alert("Cannot connect to the server! " + e.toString());
+    const js = encodeItem(nameValue, priceValue, quantityValue);
+    if (js) {
+      try {
+        wsClient.sendMessage('/test', js);
+      } catch (e) {
+        alert("Cannot connect to the server! " + e.toString());
+      }
     }
   };
 
@@ -41,20 +42,29 @@ function App() {
       <h1>Bill Splitter</h1>
       {displayedItems}
       <label>Item Name:</label>
-      <input type="text" value={nameValue} onChange={(e) => { setNameValue(e.target.value) }} />
+      <input type="text" value={nameValue} onChange={updateName} />
       <br />
       <label>Price:</label>
-      <input type="number" step="0.01" value={priceValue} onChange={(e) => { setPriceValue(e.target.value) }} />
+      <input type="number" step="0.01" value={priceValue} onChange={updatePrice} />
       <br />
       <label>Quantity:</label>
-      <input type="number" step="1" value={quantityValue} onChange={(e) => { setQuantityValue(e.target.value) }} />
-      <br />
-      <label>Borrower:</label>
-      <input type="number" step="1" value={borrowerValue} onChange={(e) => { setBorrowerValue(e.target.value) }} />
+      <input type="number" step="1" value={quantityValue} onChange={updateQuantity} />
       <br />
       <button onClick={handleSend}>Update Item</button>
     </div>
   );
+
+    function updateName(e) {
+        setNameValue(e.target.value)
+    }
+
+    function updateQuantity(e) {
+        setQuantityValue(e.target.value)
+    }
+
+    function updatePrice(e) {
+        setPriceValue(e.target.value)
+    }
 }
 
 export default App;
