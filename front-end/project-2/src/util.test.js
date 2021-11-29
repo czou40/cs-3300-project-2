@@ -50,3 +50,8 @@ test('Successful bill item submit (float price)', () => {
     window.alert.mockClear();
     expect(encodeItem("test123", 0.05, 2)).not.toBeNull();
 });
+/*
+test('temp', () => {
+    window.alert.mockClear();
+    expect(encodeItem("a***E", 0.05, 2)).toBeNull();
+}); */

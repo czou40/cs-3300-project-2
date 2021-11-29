@@ -12,6 +12,7 @@ function encodeItem(name, price, quantity) {
         window.alert("The item name cannot be whitespace only.");
         return null;
     } else if(!name.match(alphanumeric)) {
+        window.alert("The item name must only contain alphanumeric and whitespace characters.");
         return null;
     } else if (!isNumber(price) || price <= 0) {
         window.alert("The submitted price is not a positive number.");

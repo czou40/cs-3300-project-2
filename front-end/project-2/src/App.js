@@ -15,7 +15,7 @@ function App() {
   const [quantityValue, setQuantityValue] = useState(0);
   const handleSend = () => {
     const js = encodeItem(nameValue, priceValue, quantityValue);
-    if (js) {
+    if (js != null) {
       try {
         wsClient.sendMessage('/test', js);
       } catch (e) {
