@@ -1,5 +1,5 @@
-function encodeItem(name, price, quantity) {
-    return JSON.stringify({name, price, quantity});
+function encodeItem(token, eventId, name, price, quantity) {
+    return JSON.stringify({token, eventId, name, price, quantity});
 }
 
 export {encodeItem}; 

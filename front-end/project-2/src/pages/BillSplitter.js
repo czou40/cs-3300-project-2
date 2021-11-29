@@ -1,49 +1,70 @@
 import React, { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { encodeItem } from '../util';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import SockJsClient from 'react-stomp';
 import Item from '../components/Item';
+import { useIdToken, handleLogout } from '../auth';
 
 
 const initialOptions = {
     "client-id": "Adkjwefh_LAksnx2SC4DlZHGttsu1vhnngRkhRKjYQ-jO3ir4u0x6gkbVb2rq5kZ68tpQLIv_YmB0efU"
 }
-const QUEUE = '/user/queue/test';
-const TOPIC = '/topic/test';
 
 export default function BillSplitter(props) {
     const [nameValue, setNameValue] = useState("");
     const [priceValue, setPriceValue] = useState(0.00);
     const [quantityValue, setQuantityValue] = useState(0);
-    const [items, setItems] = useState([]);
+    const [event, setEvent] = useState(null);
     const [wsClient, setWsClient] = useState(null);
-    const eventId = props.match.params.id;
+    const { id } = useParams();
+    const token = useIdToken();
+    const QUEUE = '/user/queue/events/' + id;
+    const TOPIC = '/topic/events/' + id;
+    const navigate = useNavigate();
     const handleSend = () => {
-        const js = encodeItem(nameValue, priceValue, quantityValue);
+        const js = encodeItem(token, id, nameValue, priceValue, quantityValue);
         try {
-            wsClient.sendMessage('/test', js);
+            wsClient.sendMessage('/events', js);
         } catch (e) {
             alert("Cannot connect to the server! " + e.toString());
         }
     };
 
-    const handleReceiveMessage = (item, route) => {
-        console.log(item);
-        setItems(route === QUEUE ? items.concat(item) : [...items, item]);
+    const handleReceiveMessage = (event, route) => {
+        console.log(event);
+        setEvent(event);
     };
 
-    const displayedItems = items.length > 0
+    const displayedItems = event && event.items.length > 0
         ?
-        <ul>{items.map(i => <li key={i.name}><Item {...i} /></li>)}</ul>
+        <ul>{event.items.map(i => <li key={i.id}><Item {...i} /></li>)}</ul>
         :
         <p>Items will be shown here.</p>;
 
+
+
     return (
         <>
-            <SockJsClient url='http://localhost:8080/ws' topics={[QUEUE, TOPIC]}
+            {token ? <SockJsClient url='http://localhost:8080/ws' topics={[QUEUE, TOPIC]}
                 onMessage={handleReceiveMessage}
-                ref={(client) => { setWsClient(client); }} />
+                onConnect={() => {
+                    wsClient.sendMessage('/events/join', JSON.stringify({
+                        token: token,
+                        eventId: id
+                    }))
+                }}
+                ref={(client) => { setWsClient(client); }} /> : null}
             <h1>Bill Splitter</h1>
+            <button onClick={() => {
+                handleLogout()
+                    .then(() => {
+                        navigate("/login");
+                    });
+            }}>Log out</button>
+            <button onClick={() => {
+                navigate("/dashboard");
+            }}>Return to Dashboard</button>
             {displayedItems}
             <label>Item Name:</label>
             <input type="text" value={nameValue} onChange={(e) => { setNameValue(e.target.value) }} />

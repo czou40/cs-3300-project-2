@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useEvents, useIdToken, useUser } from '../auth.js';
+import { handleLogout, useEvents, useIdToken, useUser } from '../auth.js';
 import Event from '../components/Event.js';
 
 
@@ -23,6 +23,12 @@ export default function Dashboard({ props }) {
     return (
         <div className="dashboard">
             <h1>Hello, {userName}</h1>
+            <button onClick={()=>{
+                handleLogout()
+                .then(()=>{
+                    navigate("/login");
+                });
+            }}>Log out</button>
             {displayedEvents}
         </div>
     )
