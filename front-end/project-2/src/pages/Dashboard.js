@@ -54,6 +54,10 @@ export default function Dashboard({ props }) {
             })
     };
 
+    if (!token) {
+        return null;
+    }
+
     const displayedEvents = events.length > 0
         ?
         <ul>{events.map(i => <li key={i.id}><Event {...i} handleClick={handleClick} /></li>)}</ul>

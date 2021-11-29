@@ -29,10 +29,12 @@ export default function BillSplitter(props) {
     const navigate = useNavigate();
     const handleSend = () => {
         const js = encodeItem(token, id, nameValue, priceValue, quantityValue);
-        try {
-            wsClient.sendMessage('/events', js);
-        } catch (e) {
-            alert("Cannot connect to the server! " + e.toString());
+        if (js != null) {
+            try {
+                wsClient.sendMessage('/events', js);
+            } catch (e) {
+                alert("Cannot connect to the server! " + e.toString());
+            }
         }
     };
 
@@ -48,7 +50,9 @@ export default function BillSplitter(props) {
         <p>Items will be shown here.</p>;
 
 
-
+    if (!token) {
+        return null;
+    }
     return (
         <>
             {token ? <SockJsClient url='http://localhost:8080/ws' topics={[QUEUE, TOPIC]}
