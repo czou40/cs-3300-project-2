@@ -4,7 +4,7 @@ import { encodeItem } from '../util';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import SockJsClient from 'react-stomp';
 import Item from '../components/Item';
-import { useIdToken, handleLogout } from '../auth';
+import { useIdToken, handleLogout } from '../api';
 
 
 const initialOptions = {
@@ -56,6 +56,12 @@ export default function BillSplitter(props) {
                 }}
                 ref={(client) => { setWsClient(client); }} /> : null}
             <h1>Bill Splitter</h1>
+            {event?<h2>Event Name: {event.eventName}</h2>:null}
+            {event?<h2>Payer: {event.payer.name}</h2>:null}
+            {event?<h2>Attendees:</h2>:null}
+
+            {event?event.attendees.map(i=><h3 key={i.email}>{i.name}</h3>):null}
+
             <button onClick={() => {
                 handleLogout()
                     .then(() => {

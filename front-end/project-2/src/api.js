@@ -16,6 +16,11 @@ const firebaseConfig = {
 const BASE_URL = 'http://localhost:8080'
 const SIGNUP_URL = BASE_URL + '/signup'
 const EVENT_URL = BASE_URL + '/me/events'
+const CREATE_EVENT_URL = BASE_URL + '/events'
+
+const JOIN_EVENT_URL1 = BASE_URL + '/events'
+const JOIN_EVENT_URL2 = '/attendees'
+
 
 // Initialize Firebase
 initializeApp(firebaseConfig);
@@ -27,9 +32,9 @@ const handleLogin = async (email, password) => {
         })
 }
 
-const handleSignup = async (name, email, password) => {
+const handleSignup = async (name, email, password, paypalEmail) => {
     return axios.post(SIGNUP_URL, {
-        name, email, password
+        name, email, password, paypalEmail
     });
 }
 
@@ -37,6 +42,21 @@ const handleLogout = async () => {
     return signOut(auth);
 }
 
+const handleCreateNewEvent = async (token, eventName) => {
+    return axios.post(CREATE_EVENT_URL, { eventName }, {
+        headers: {
+            'Authorization': 'Bearer ' + token
+        }
+    });
+}
+
+const handleJoinEvent = async (token, id) => {
+    return axios.post(JOIN_EVENT_URL1 + '/' + id + JOIN_EVENT_URL2, {}, {
+        headers: {
+            'Authorization': 'Bearer ' + token
+        }
+    });
+}
 
 const useUser = () => {
     const [authUser, setAuthUser] = useState(null);
@@ -80,18 +100,18 @@ const useEvents = () => {
         if (token) {
             axios.get(EVENT_URL, {
                 headers: {
-                  'Authorization': 'Bearer ' + token
+                    'Authorization': 'Bearer ' + token
                 }
-              })
-              .then(res=>{
-                  console.log(res.data)
-                  setEvents(res.data);
-              })
-              .catch(err=>{
-                  console.error(err.response.data);
-              })
+            })
+                .then(res => {
+                    console.log(res.data)
+                    setEvents(res.data);
+                })
+                .catch(err => {
+                    console.error(err.response.data);
+                })
         }
     }, [token])
     return events;
 };
-export { handleLogin, handleSignup, useUser, useIdToken, handleLogout, useEvents };
+export { handleLogin, handleSignup, useUser, useIdToken, handleLogout, useEvents, handleCreateNewEvent,handleJoinEvent };
