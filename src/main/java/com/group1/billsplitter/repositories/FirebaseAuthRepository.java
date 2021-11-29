@@ -20,7 +20,7 @@ public class FirebaseAuthRepository {
         this.firebaseAuth = firebaseAuth;
     }
 
-    public Result createUser(String email, boolean emailVerified, String password, String phoneNumber, String name) {
+    public Result<?> createUser(String email, boolean emailVerified, String password, String phoneNumber, String name) {
         UserRecord.CreateRequest request;
         try {
             request = new UserRecord.CreateRequest()
@@ -34,52 +34,59 @@ public class FirebaseAuthRepository {
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return new Result(false, "Error when creating user: " + e.getMessage());
+            return new Result<>(false, "Error when creating user: " + e.getMessage());
         }
         try {
             UserRecord userRecord = firebaseAuth.createUser(request);
-            return new Result(true, "Successfully created new user: " + userRecord.getDisplayName());
+            return new Result<>(true, "Successfully created new user: " + userRecord.getDisplayName());
         } catch (Exception e) {
             e.printStackTrace();
             String reason = e.getCause().getMessage();
             reason = reason.substring(reason.indexOf("{"));
             reason = JsonParser.parseString(reason).getAsJsonObject().get("error").getAsJsonObject().get("message").getAsString();
             return new Result(false, "Error when creating user: " + reason);
-
 //            return new Result(false, "Error when creating user: " + new Gson().fromJson(e.getCause().getMessage()));
         }
     }
 
-    public Result createUser(String email, String password, String phoneNumber, String name) {
+    public Result<?> createUser(String email, String password, String phoneNumber, String name) {
         return createUser(email, false, password, phoneNumber, name);
     }
 
-    public Result createUser(String email, String password, String name) {
+    public Result<?> createUser(String email, String password, String name) {
         return createUser(email, false, password, null, name);
     }
 
-    public List<User> getAllUsers() {
+    public ListUsersPage getAllUsers() {
         try {
             ListUsersPage page = firebaseAuth.listUsers(null);
-            List<User> result = new ArrayList<>();
-            for (ExportedUserRecord user : page.iterateAll()) {
-                result.add(new User(user.getEmail(), user.getDisplayName()));
-            }
-            return result;
+//            List<User> result = new ArrayList<>();
+//            for (ExportedUserRecord user : page.iterateAll()) {
+//                result.add(new User(user.getEmail(), user.getDisplayName(), get));
+//            }
+            return page;
         } catch (FirebaseAuthException e) {
             e.printStackTrace();
             System.out.println("Error when fetching the list of users: " + e.getCause());
-            return new ArrayList<>();
+            return null;
         }
     }
 
-    public Result verifyIdToken(String idToken) {
+    public UserRecord getUserByEmail(String email) throws FirebaseAuthException {
+        return firebaseAuth.getUserByEmail(email);
+    }
+
+    public UserRecord getUserByUid(String uid) throws FirebaseAuthException {
+        return firebaseAuth.getUser(uid);
+    }
+
+    public Result<FirebaseToken> verifyIdToken(String idToken) {
         try {
             FirebaseToken decodedToken = firebaseAuth.verifyIdToken(idToken);
-            return new Result(true, decodedToken.getName());
+            System.out.println(decodedToken.getName());
+            return new Result<>(true, decodedToken.getName(), decodedToken);
         } catch (Exception e) {
-//            e.printStackTrace();
-            return new Result(false, "Your login session is no longer valid! Please log in again!");
+            return new Result<>(false, e.getMessage());
         }
     }
 }
