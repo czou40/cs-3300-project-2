@@ -4,6 +4,7 @@ import com.google.api.gax.rpc.InvalidArgumentException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
+import javax.validation.constraints.NotNull;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,8 +12,10 @@ import java.util.UUID;
 
 @Component
 public class Event {
+    @NotNull
     private String eventName;
     private String id;
+    @NotNull
     private User payer;
     private List<User> attendees;
     private List<Item> items;

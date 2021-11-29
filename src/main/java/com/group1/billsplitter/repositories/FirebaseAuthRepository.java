@@ -20,7 +20,7 @@ public class FirebaseAuthRepository {
         this.firebaseAuth = firebaseAuth;
     }
 
-    public Result<?> createUser(String email, boolean emailVerified, String password, String phoneNumber, String name) {
+    public Result<String> createUser(String email, boolean emailVerified, String password, String phoneNumber, String name) {
         UserRecord.CreateRequest request;
         try {
             request = new UserRecord.CreateRequest()
@@ -38,7 +38,8 @@ public class FirebaseAuthRepository {
         }
         try {
             UserRecord userRecord = firebaseAuth.createUser(request);
-            return new Result<>(true, "Successfully created new user: " + userRecord.getDisplayName());
+            return new Result<>(true, "Successfully created new user: " + userRecord.getDisplayName(),
+                    userRecord.getEmail());
         } catch (Exception e) {
             e.printStackTrace();
             String reason = e.getCause().getMessage();
@@ -49,11 +50,11 @@ public class FirebaseAuthRepository {
         }
     }
 
-    public Result<?> createUser(String email, String password, String phoneNumber, String name) {
+    public Result<String> createUser(String email, String password, String phoneNumber, String name) {
         return createUser(email, false, password, phoneNumber, name);
     }
 
-    public Result<?> createUser(String email, String password, String name) {
+    public Result<String> createUser(String email, String password, String name) {
         return createUser(email, false, password, null, name);
     }
 

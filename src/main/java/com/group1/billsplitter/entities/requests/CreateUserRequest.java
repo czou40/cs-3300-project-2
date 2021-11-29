@@ -4,29 +4,28 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Component
 public class CreateUserRequest {
     @NotNull
+    @NotEmpty
     @Email
     private String email;
     @NotNull
+    @NotEmpty
     @Length(min = 6)
     private String password;
     @NotNull
+    @NotEmpty
     private String name;
     @NotNull
+    @NotEmpty
     @Email
     private String paypalEmail;
 
     public CreateUserRequest() {
-    }
-
-    public CreateUserRequest(String email, String password, String name) {
-        this.email = email;
-        this.password = password;
-        this.name = name;
     }
 
     public CreateUserRequest(String email, String password, String name, String paypalEmail) {

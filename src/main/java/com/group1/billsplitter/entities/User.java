@@ -2,12 +2,16 @@ package com.group1.billsplitter.entities;
 
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Component
 public class User {
+    @NotNull
     private String email;
+    @NotNull
     private String name;
+    @NotNull
     private String paypalEmail;
 
     public User() {

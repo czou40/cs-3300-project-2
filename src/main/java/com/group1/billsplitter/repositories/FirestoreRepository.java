@@ -25,7 +25,7 @@ public class FirestoreRepository {
         DocumentReference documentReference = firestore.collection(collectionName).document(documentId);
         DocumentSnapshot documentSnapshot = documentReference.get().get();
         if (documentSnapshot.getData() == null) {
-            throw new NotFoundException("Document not found!");
+            throw new NotFoundException("Not found!");
         }
         return documentSnapshot;
     }

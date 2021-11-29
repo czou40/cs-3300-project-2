@@ -23,6 +23,8 @@ public class DefaultController {
 
     @ExceptionHandler({ MissingRequestHeaderException.class })
     protected ResponseEntity<Object> MissingRequestHeaderException(MissingRequestHeaderException exception) {
+        System.out.println(1);
+
         System.out.println(exception.getHeaderName());
         if (exception.getHeaderName().equals("Authorization")) {
             return new ResponseEntity<>(new Message(exception.getMessage()), HttpStatus.UNAUTHORIZED);
@@ -32,30 +34,40 @@ public class DefaultController {
 
     @ExceptionHandler({ Exception.class })
     protected ResponseEntity<Object> handleException(Exception exception) {
+        System.out.println(2);
+
         return new ResponseEntity<>(new Message(exception.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({ MethodArgumentNotValidException.class })
     protected ResponseEntity<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
+        System.out.println(3);
+
         return new ResponseEntity<>(new Message(exception.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({ HttpMessageNotReadableException.class })
     protected ResponseEntity<Object> handleHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
+        System.out.println(4);
         return new ResponseEntity<>(new Message(exception.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({ InvalidParameterException.class })
     protected ResponseEntity<Object> handleInvalidParameterException(InvalidParameterException exception) {
+        System.out.println(5);
+
         return new ResponseEntity<>(new Message(exception.getMessage()), HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler({ NotFoundException.class })
     protected ResponseEntity<Object> handleNotFoundException(NotFoundException exception) {
+        System.out.println(6);
         return new ResponseEntity<>(new Message(exception.getMessage()), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({ UnauthorizedException.class })
     public ResponseEntity<Message> handleUnauthorizedException(UnauthorizedException exception){
+        System.out.println(7);
+
         return new ResponseEntity<>(new Message(exception.getMessage()), HttpStatus.UNAUTHORIZED);
     }
 

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 @Component
-public class WsInitialDataRequest  {
+public class WsJoinRequest {
     private String token;
     private String eventId;
 }

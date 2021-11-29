@@ -46,23 +46,24 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    private ResponseEntity<Message> signup(@Valid @RequestBody CreateUserRequest body) {
-        String email = "", password = "", name = "";
+    private ResponseEntity<Object> signup(@Valid @RequestBody CreateUserRequest body) {
+        String email = "", password = "", name = "", paypalEmail="";
         try {
             email = body.getEmail().trim();
             password = body.getPassword();
             name = body.getName().trim();
+            paypalEmail = body.getPaypalEmail().trim();
         } catch (Exception e) {
-            return new ResponseEntity<>(new Message("Please specify your full name, email address, and password!"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new Message("Please specify your full name, email address, password, and Paypal email!"), HttpStatus.BAD_REQUEST);
         }
-        if (email.equals("") || password.equals("") || name.equals("")) {
-            return new ResponseEntity<>(new Message("Please specify your full name, email address, and password!"), HttpStatus.BAD_REQUEST);
+        if (email.equals("") || password.equals("") || name.equals("") || paypalEmail.equals("")) {
+            return new ResponseEntity<>(new Message("Please specify your full name, email address, password, and Paypal email!"), HttpStatus.BAD_REQUEST);
         }
         if (!email.endsWith("@gatech.edu")) {
             System.out.println(email);
             return new ResponseEntity<>(new Message("You can only register with a Georgia Tech email!"), HttpStatus.BAD_REQUEST);
         } else {
-            Result result = firebaseService.CreateUser(email, password, name);
+            Result<String> result = firebaseService.createUser(email, password, name, body.getPaypalEmail());
             return new ResponseEntity<>(new Message(result.getMessage()), result.isSuccessful() ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
         }
     }
@@ -71,8 +72,7 @@ public class UserController {
     private ResponseEntity<Message> setPaypalEmail(@RequestHeader(value = "Authorization") String token, @Valid @RequestBody SetPaypalEmailRequest body) {
         FirebaseToken verified = firebaseService.verifyIdToken(token);
         String paypalEmail = body.getPaypalEmail();
-        String uid = verified.getUid();
-        Result<?> result = firebaseService.setPaypalEmail(uid, paypalEmail);
+        Result<?> result = firebaseService.setPaypalEmail(verified.getEmail(), paypalEmail);
         return respondWithMessage(result);
     }
 
@@ -81,6 +81,12 @@ public class UserController {
         FirebaseToken verified = firebaseService.verifyIdToken(token);
         Result<User> result = firebaseService.getUserByUid(verified.getUid());
         return respondWithEntity(result);
+    }
+
+    @GetMapping("/me/events")
+    private ResponseEntity<Object> getEventsForMe(@RequestHeader(value = "Authorization") String token) {
+        FirebaseToken verified = firebaseService.verifyIdToken(token);
+        return getEventsForUser(token, verified.getEmail());
     }
 
 
@@ -135,7 +141,7 @@ public class UserController {
         FirebaseToken verified = firebaseService.verifyIdToken(token);
         User user = firebaseService.getUserByUid(verified.getUid()).getPayload();
         Item item = new Item(body.getName(), body.getPrice(), body.getQuantity(), user);
-        Result<Message> result = firebaseService.addItem(id, item);
+        Result<Event> result = firebaseService.addItem(id, item);
         return respondWithMessage(result);
     }
 
@@ -144,7 +150,7 @@ public class UserController {
                                             @PathVariable String id, @PathVariable String itemId)  {
         FirebaseToken verified = firebaseService.verifyIdToken(token);
         User user = firebaseService.getUserByUid(verified.getUid()).getPayload();
-        Result<Message> result = firebaseService.deleteItem(id, itemId);
+        Result<Event> result = firebaseService.deleteItem(id, itemId);
         return respondWithMessage(result);
     }
 

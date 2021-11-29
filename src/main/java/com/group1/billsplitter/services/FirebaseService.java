@@ -44,8 +44,12 @@ public class FirebaseService {
         this.firebaseAuthRepository = firebaseAuthRepository;
     }
 
-    public Result CreateUser(String email, String password, String name) {
-        return firebaseAuthRepository.createUser(email, password, name);
+    public Result<String> createUser(String email, String password, String name, String paypalEmail) {
+        Result<String> result = firebaseAuthRepository.createUser(email, password, name);
+        if(!result.isSuccessful()) {
+            return new Result<>(false, result.getMessage());
+        }
+        return setPaypalEmail(email, paypalEmail);
     }
 
     public String testFirestore() throws ExecutionException, InterruptedException {
@@ -53,9 +57,9 @@ public class FirebaseService {
         return (String) documentSnapshot.getData().get("message");
     }
 
-    public Result<String> getPaypalEmail(String uid) {
+    public Result<String> getPaypalEmail(String email) {
         try {
-            DocumentSnapshot documentSnapshot = firestoreRepository.getDocument(PAYPAL_EMAILS, uid);
+            DocumentSnapshot documentSnapshot = firestoreRepository.getDocument(PAYPAL_EMAILS, email);
             return new Result<>(true, "Success.", documentSnapshot.getString("email"));
         } catch (Exception e) {
             e.printStackTrace();
@@ -66,7 +70,7 @@ public class FirebaseService {
     public Result<User> getUserByEmail(String email) {
         try {
             UserRecord userRecord = firebaseAuthRepository.getUserByEmail(email);
-            Result<String> result = getPaypalEmail(userRecord.getUid());
+            Result<String> result = getPaypalEmail(userRecord.getEmail());
             String paypalEmail = result.isSuccessful() ? result.getPayload():"";
             return new Result<>(true, "Success.", new User(userRecord.getEmail(), userRecord.getDisplayName(), paypalEmail));
         } catch (FirebaseAuthException e) {
@@ -78,7 +82,7 @@ public class FirebaseService {
     public Result<User> getUserByUid(String uid) {
         try {
             UserRecord userRecord = firebaseAuthRepository.getUserByUid(uid);
-            Result<String> result = getPaypalEmail(userRecord.getUid());
+            Result<String> result = getPaypalEmail(userRecord.getEmail());
             String paypalEmail = result.isSuccessful() ? result.getPayload():"";
             return new Result<>(true, "Success.", new User(userRecord.getEmail(), userRecord.getDisplayName(), paypalEmail));
         } catch (FirebaseAuthException e) {
@@ -87,12 +91,12 @@ public class FirebaseService {
         }
     }
 
-    public Result<?> setPaypalEmail(String uid, String paypalEmail) {
+    public Result<String> setPaypalEmail(String email, String paypalEmail) {
         Map<String, Object> map = new HashMap<>();
         map.put("email", paypalEmail);
         try {
-            firestoreRepository.setDocument(PAYPAL_EMAILS, uid, map);
-            return new Result<>(true, "Success.");
+            firestoreRepository.setDocument(PAYPAL_EMAILS, email, map);
+            return new Result<>(true, "Success.", paypalEmail);
         } catch (Exception e) {
             e.printStackTrace();
             return new Result<>(false, e.getMessage());
@@ -139,7 +143,7 @@ public class FirebaseService {
         return new Result<>(true, "Success.");
     }
 
-    public Result<Message> addItem(String eventId, Item item) {
+    public Result<Event> addItem(String eventId, Item item) {
         Result<Event> event = getEvent(eventId);
         if (!event.isSuccessful()) {
             return new Result<>(false, event.getMessage());
@@ -147,10 +151,10 @@ public class FirebaseService {
         event.getPayload().addItem(item);
         events.put(eventId, event.getPayload());
         dirtyEvents.add(eventId);
-        return new Result<>(true, "Success.");
+        return new Result<>(true, "Success.", event.getPayload());
     }
 
-    public Result<Message> deleteItem(String eventId, String itemId) {
+    public Result<Event> deleteItem(String eventId, String itemId) {
         Result<Event> event = getEvent(eventId);
         if (!event.isSuccessful()) {
             return new Result<>(false, event.getMessage());
@@ -158,7 +162,7 @@ public class FirebaseService {
         event.getPayload().removeItem(itemId);
         events.put(eventId, event.getPayload());
         dirtyEvents.add(eventId);
-        return new Result<>(true, "Success.");
+        return new Result<>(true, "Success.", event.getPayload());
     }
 
     public Result<Message> addAttendee(String eventId, String email) {
