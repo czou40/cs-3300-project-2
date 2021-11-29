@@ -1,5 +1,5 @@
 import React,{ useState } from 'react';
-import { handleSignup, useIdToken } from '../firebase';
+import { handleSignup, useIdToken } from '../auth';
 import { Navigate } from 'react-router-dom';
 
 

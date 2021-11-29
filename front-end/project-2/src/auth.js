@@ -13,7 +13,9 @@ const firebaseConfig = {
     appId: "1:786958645951:web:413554094b35e08e65640a",
     measurementId: "G-35YH4CMQPW"
 };
-const SIGNUP_URL = 'http://localhost:8080/signup'
+const BASE_URL = 'http://localhost:8080'
+const SIGNUP_URL = BASE_URL + '/signup'
+const EVENT_URL = BASE_URL + '/me/events'
 
 // Initialize Firebase
 initializeApp(firebaseConfig);
@@ -34,6 +36,7 @@ const handleSignup = async (name, email, password) => {
 const handleLogout = async () => {
     return signOut(auth);
 }
+
 
 const useUser = () => {
     const [authUser, setAuthUser] = useState(null);
@@ -70,4 +73,25 @@ const useIdToken = () => {
     return token;
 }
 
-export { handleLogin, handleSignup, useUser, useIdToken, handleLogout };
+const useEvents = () => {
+    const [events, setEvents] = useState([]);
+    const token = useIdToken();
+    useEffect(() => {
+        if (token) {
+            axios.get(EVENT_URL, {
+                headers: {
+                  'Authorization': 'Bearer ' + token
+                }
+              })
+              .then(res=>{
+                  console.log(res.data)
+                  setEvents(res.data);
+              })
+              .catch(err=>{
+                  console.error(err.response.data);
+              })
+        }
+    }, [token])
+    return events;
+};
+export { handleLogin, handleSignup, useUser, useIdToken, handleLogout, useEvents };

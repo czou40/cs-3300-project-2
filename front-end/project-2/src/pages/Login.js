@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Navigate, Link } from 'react-router-dom';
-import { handleLogin, useIdToken } from '../firebase'
+import { handleLogin, useIdToken, useUser } from '../auth'
 import '../login.css'
 
 export default function Login(props) {
@@ -8,6 +8,7 @@ export default function Login(props) {
     const [password, setPassword] = useState("");
     const [error, setError] = useState('');
     const token = useIdToken();
+
     if (token) {
         console.log(token);
         return <Navigate to='/dashboard' />

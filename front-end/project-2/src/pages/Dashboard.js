@@ -1,20 +1,29 @@
 import React from 'react';
-import CreateBill from '../components/CreateBill.js';
-import Notification from '../components/Notification.js';
-import Profile from '../components/Profile.js';
+import { useNavigate } from 'react-router-dom';
+import { useEvents, useIdToken, useUser } from '../auth.js';
+import Event from '../components/Event.js';
 
 
-export default function Dashboard({ profile, notifications }) {
+export default function Dashboard({ props }) {
+    const events = useEvents();
+    const user = useUser();
+    const userName = user ? user.displayName : "Unknown";
+    const navigate = useNavigate();
+
+    const handleClick = (id) => {
+        console.log(id)
+        navigate("/splitter/"+id)
+    };
+
+    const displayedEvents = events.length > 0
+        ?
+        <ul>{events.map(i => <li key={i.id}><Event {...i} handleClick={handleClick} /></li>)}</ul>
+        :
+        <p>Items will be shown here.</p>;
     return (
         <div className="dashboard">
-            <Profile profile={profile} />
-            <CreateBill user={profile} />
-            <div className="notifications">
-                {notifications.map((notification, i) => {
-                    return <Notification notification={notification} number={i + 1} />
-                })}
-            </div>
-
+            <h1>Hello, {userName}</h1>
+            {displayedEvents}
         </div>
     )
 }

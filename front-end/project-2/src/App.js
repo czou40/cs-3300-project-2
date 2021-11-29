@@ -15,8 +15,9 @@ function App() {
           <Route exact path='/' element={<Navigate to={'/login'}/>}/>
           <Route exact path='/login' element={<Login/>}/>
           <Route exact path='/signup' element={<Signup/>}/>
-          <Route exact path='/dashboard' element={<Navigate to={'/splitter'}/>}/>
-          <Route exact path='/splitter' element={<BillSplitter />}/> 
+          <Route exact path='/dashboard' element={<Dashboard/>}/>
+          <Route exact path='/splitter' element={<Navigate to={'/dashboard'}/>}/> 
+          <Route path='/splitter/:id' element={<BillSplitter/>}/> 
         </Routes>
       </Router>
     </div>

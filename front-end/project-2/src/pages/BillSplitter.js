@@ -17,6 +17,7 @@ export default function BillSplitter(props) {
     const [quantityValue, setQuantityValue] = useState(0);
     const [items, setItems] = useState([]);
     const [wsClient, setWsClient] = useState(null);
+    const eventId = props.match.params.id;
     const handleSend = () => {
         const js = encodeItem(nameValue, priceValue, quantityValue);
         try {
