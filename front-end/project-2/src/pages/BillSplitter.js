@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { encodeItem } from '../util';
+import { encodeItem, calculatePayment, calculateIncome } from '../util';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import SockJsClient from 'react-stomp';
 import Item from '../components/Item';
-import { useIdToken, handleLogout } from '../api';
+import { useIdToken, handleLogout, useUser } from '../api';
 
 
 const initialOptions = {
@@ -19,6 +19,11 @@ export default function BillSplitter(props) {
     const [wsClient, setWsClient] = useState(null);
     const { id } = useParams();
     const token = useIdToken();
+    const user = useUser();
+    const email = user ? user.email : "";
+    const payment = email && event ? calculatePayment(email, event) : null;
+    const income = email && event ? calculateIncome(email, event) : null;
+
     const QUEUE = '/user/queue/events/' + id;
     const TOPIC = '/topic/events/' + id;
     const navigate = useNavigate();
@@ -56,11 +61,11 @@ export default function BillSplitter(props) {
                 }}
                 ref={(client) => { setWsClient(client); }} /> : null}
             <h1>Bill Splitter</h1>
-            {event?<h2>Event Name: {event.eventName}</h2>:null}
-            {event?<h2>Payer: {event.payer.name}</h2>:null}
-            {event?<h2>Attendees:</h2>:null}
+            {event ? <h2>Event Name: {event.eventName}</h2> : null}
+            {event ? <h2>Payer: {event.payer.name} ({event.payer.paypalEmail})</h2> : null}
+            {event ? <h2>Attendees:</h2> : null}
 
-            {event?event.attendees.map(i=><h3 key={i.email}>{i.name}</h3>):null}
+            {event ? event.attendees.map(i => <h3 key={i.email}>{i.name}</h3>) : null}
 
             <button onClick={() => {
                 handleLogout()
@@ -82,27 +87,42 @@ export default function BillSplitter(props) {
             <input type="number" step="1" value={quantityValue} onChange={(e) => { setQuantityValue(e.target.value) }} />
             <br />
             <button onClick={handleSend}>Update Item</button>
-            <PayPalScriptProvider options={initialOptions}>
-                <PayPalButtons
-                    createOrder={(data, actions) => {
-                        return actions.order.create({
-                            purchase_units: [{
-                                amount: {
-                                    value: '0.01'
-                                },
-                                payee: {
-                                    email_address: 'sb-fnoyw8756325@personal.example.com'
-                                }
-                            }]
-                        });
-                    }}
-                    onApprove={(data, actions) => {
-                        return actions.order.capture().then(function (details) {
-                            alert('Transaction completed by ' + details.payer.name.given_name);
-                        });
-                    }}
-                />
-            </PayPalScriptProvider>
+            {payment != null ?
+                (payment >= 0 ?
+                    <p>You need to pay ${payment} to {event.payer.name} ({event.payer.paypalEmail})</p>
+                    :
+                    <p>You are the payer! You should receive ${income} from other attendees.</p>
+                )
+                :
+                null
+            }
+            {
+                event && event.payer.paypalEmail && payment && payment > 0 ?
+                    < PayPalScriptProvider options={initialOptions}>
+                        <PayPalButtons
+                            createOrder={(data, actions) => {
+                                console.log(event)
+                                return actions.order.create({
+                                    purchase_units: [{
+                                        amount: {
+                                            value: payment
+                                        },
+                                        payee: {
+                                            email_address: event.payer.paypalEmail
+                                        }
+                                    }]
+                                });
+                            }}
+                            onApprove={(data, actions) => {
+                                return actions.order.capture().then(function (details) {
+                                    alert('Transaction completed by ' + details.payer.name.given_name);
+                                });
+                            }}
+                        />
+                    </PayPalScriptProvider>
+                    :
+                    null
+            }
         </>
     );
 }

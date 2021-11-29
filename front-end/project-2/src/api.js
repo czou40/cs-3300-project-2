@@ -108,10 +108,14 @@ const useEvents = () => {
                     setEvents(res.data);
                 })
                 .catch(err => {
-                    console.error(err.response.data);
+
+                    console.error(err);
+                    if (err.response) {
+                        console.error(err.response)
+                    }
                 })
         }
     }, [token])
     return events;
 };
-export { handleLogin, handleSignup, useUser, useIdToken, handleLogout, useEvents, handleCreateNewEvent,handleJoinEvent };
+export { handleLogin, handleSignup, useUser, useIdToken, handleLogout, useEvents, handleCreateNewEvent, handleJoinEvent };
