@@ -1,18 +1,19 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithEmailAndPassword, setPersistence, browserLocalPersistence, onAuthStateChanged, signOut } from "firebase/auth";
 import { useState, useEffect } from "react";
+
 import axios from 'axios';
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCIwViG-QtSFLVrBVSzY9nFkMK2nUhoCu8",
-    authDomain: "cs-3300-project-1-93e05.firebaseapp.com",
-    projectId: "cs-3300-project-1-93e05",
-    storageBucket: "cs-3300-project-1-93e05.appspot.com",
-    messagingSenderId: "190278454096",
-    appId: "1:190278454096:web:c12f71f20d824460f7fa55",
-    measurementId: "G-MSDVLQY2VY"
+    apiKey: "AIzaSyAiXnow51Kxx-njcfT0UdnArP5-TI5jKwE",
+    authDomain: "cs-3300-project-2-75b15.firebaseapp.com",
+    projectId: "cs-3300-project-2-75b15",
+    storageBucket: "cs-3300-project-2-75b15.appspot.com",
+    messagingSenderId: "786958645951",
+    appId: "1:786958645951:web:413554094b35e08e65640a",
+    measurementId: "G-35YH4CMQPW"
 };
-const SIGNUP_URL = './signup'
+const SIGNUP_URL = 'http://localhost:8080/signup'
 
 // Initialize Firebase
 initializeApp(firebaseConfig);
@@ -38,7 +39,7 @@ const useUser = () => {
     const [authUser, setAuthUser] = useState(null);
     useEffect(() => {
         const unlisten = onAuthStateChanged(auth, authUser => {
-            if(authUser) {
+            if (authUser) {
                 setAuthUser(authUser);
             } else {
                 setAuthUser(null);
@@ -54,16 +55,16 @@ const useUser = () => {
 const useIdToken = () => {
     const [token, setToken] = useState(null);
     const user = useUser();
-    useEffect(()=>{
+    useEffect(() => {
         if (user) {
             user.getIdToken()
-            .then(token=>{
-                setToken(token);
-            })
-            .catch(err=>{
-                console.error(err);
-                setToken(null);
-            })
+                .then(token => {
+                    setToken(token);
+                })
+                .catch(err => {
+                    console.error(err);
+                    setToken(null);
+                })
         }
     }, [user]);
     return token;

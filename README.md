@@ -24,6 +24,6 @@ To run the frontend of the project, follow these steps:
 ### Software
 - `\src\main\java` contains the backend code
     - `..\com.group1.billsplitter` contains the SpringBoot controllers and SQL database integration
-    - `..\entities` contains the Java objects representing bills and related things
+    - `..\com.group1.billsplitter.entities` contains the Java objects representing bills and related things
 - `\front-end\project-2\src` contains the frontend code
     - `..\pages` and `..\components` comprise the application dashboard

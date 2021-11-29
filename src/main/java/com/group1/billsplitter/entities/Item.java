@@ -1,4 +1,4 @@
-package entities;
+package com.group1.billsplitter.entities;
 
 import org.springframework.stereotype.Component;
 

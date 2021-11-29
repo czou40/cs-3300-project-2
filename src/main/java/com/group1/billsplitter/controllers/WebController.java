@@ -3,11 +3,10 @@ package com.group1.billsplitter.controllers;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.io.*;
 
-import entities.Account;
-import entities.Bill;
-import entities.User;
+import com.group1.billsplitter.entities.Account;
+import com.group1.billsplitter.entities.Bill;
+import com.group1.billsplitter.entities.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -84,10 +83,9 @@ public class WebController {
     }
 
     @DeleteMapping("/deleteAccount")
-    public void deleteAccount(@RequestBody Account account) {
+    public void deleteAccount(@PathVariable String account) {
         jdbcTemplate.update(
-                "DELETE FROM accounts WHERE username = ? AND paymentMethod = ?",
-                account.getUsername(), account.getPaymentMethod()
+                "DELETE FROM accounts WHERE username = ?", account
         );
     }
 
