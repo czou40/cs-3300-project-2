@@ -3,8 +3,8 @@ function encodeItem(name, price, quantity) {
         return !isNaN(value) && !isNaN(parseFloat(value));
     }
 
-    if (!name || !price || !quantity) {
-        window.alert("Something went wrong.");
+    if (!name) {
+        window.alert("The item name is empty.");
         return null;
     } else if (!isNumber(price) || price <= 0) {
         window.alert("The submitted price is not a positive number.");
