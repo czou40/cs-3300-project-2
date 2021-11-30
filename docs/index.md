@@ -67,11 +67,16 @@ Our project is a hybrid of three different architectural styles: event-driven ar
 
 #### Database Diagram
 
+![Database Diagram](./database.png)
 
 #### Sequence Diagram
 
+![Login Sequence Diagram](./login_sequence.png)
+![Dashboard Sequence Diagram](./dashboard_sequence.png)
 
 #### Component Diagram
+
+![Component Diagram](./component.png)
 
 ## Testing
 
