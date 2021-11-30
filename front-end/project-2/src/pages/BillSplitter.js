@@ -4,7 +4,7 @@ import { encodeItem, calculatePayment, calculateIncome } from '../util';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import SockJsClient from 'react-stomp';
 import Item from '../components/Item';
-import { useIdToken, handleLogout, useUser } from '../api';
+import { useIdToken, handleLogout, useUser, WS } from '../api';
 
 
 const initialOptions = {
@@ -55,7 +55,7 @@ export default function BillSplitter(props) {
     }
     return (
         <>
-            {token ? <SockJsClient url='http://localhost:8080/ws' topics={[QUEUE, TOPIC]}
+            {token ? <SockJsClient url={WS} topics={[QUEUE, TOPIC]}
                 onMessage={handleReceiveMessage}
                 onConnect={() => {
                     wsClient.sendMessage('/events/join', JSON.stringify({

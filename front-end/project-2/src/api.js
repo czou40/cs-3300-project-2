@@ -13,11 +13,11 @@ const firebaseConfig = {
     appId: "1:786958645951:web:413554094b35e08e65640a",
     measurementId: "G-35YH4CMQPW"
 };
-const BASE_URL = 'http://localhost:8080'
+const BASE_URL = 'https://3300-project-2.api.czou.me'
 const SIGNUP_URL = BASE_URL + '/signup'
 const EVENT_URL = BASE_URL + '/me/events'
 const CREATE_EVENT_URL = BASE_URL + '/events'
-
+const WS = BASE_URL + '/ws'
 const JOIN_EVENT_URL1 = BASE_URL + '/events'
 const JOIN_EVENT_URL2 = '/attendees'
 
@@ -118,4 +118,4 @@ const useEvents = () => {
     }, [token])
     return events;
 };
-export { handleLogin, handleSignup, useUser, useIdToken, handleLogout, useEvents, handleCreateNewEvent, handleJoinEvent };
+export { handleLogin, handleSignup, useUser, useIdToken, handleLogout, useEvents, handleCreateNewEvent, handleJoinEvent, WS };
