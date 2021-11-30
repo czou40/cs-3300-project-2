@@ -1,5 +1,7 @@
 # Project Report: Bill Splitter
 
+[Link](https://bill-splitter-frontend-333603.uc.r.appspot.com)
+
 ## Overview
 
 ### Executive Summary
@@ -38,6 +40,10 @@ Chunhao Zou - Item submission, Bill splitting function, Authentication
 | Actual Result        | What was actually seen                                                                                                                                                                                       |
 | P / F                | Pass / Fail indicator. Checkmark = Pass. “F” = Fail                                                                                                                                                          |
 | Notes                | Additional notes, error messages, or other information about the test.                                                                                                                                       |
+| WebSocket            |An application-layer computer communications protocol that thinly wraps the transport-layer TCP protocol. It allows a server and a client to communicate bi-directionally|
+|Event                 |A real-life activity that involves a bill, e.g. trip to Seattle, shopping at Target, or having dinner at a local restaurant|
+|Item                  |A thing that costs money|
+
 
 ## Design
 
@@ -46,24 +52,32 @@ Chunhao Zou - Item submission, Bill splitting function, Authentication
 #### Assumptions
 
 Continuous connection of internet (server requests and page requests are handled non statically and require authentication, without internet the page will not work)
+
 Assumed they were accessing from a web browser and not mobile
-Accessed via a browser supporting HTML5, JS, CSS, JS, 
+
+Accessed via a browser supporting HTML5, JS, CSS, JS,
 
 #### Constraints
 
 Time constraint (3-4 weeks total)
+
 Team scheduling conflicts with the Holidays and final assignments for other classes
+
 Project had to be more complex than Project 1
 
 ### Architectural Design
 
 #### Overview
-Our project consists of two parts: a front-end React application, and a back-end web application that serves as a REST API for the application. The REST API contains three functionalities: user creation, user login validation, and wrapping the Google Places API. We utilize Spring Boot as the back-end framework and use Maven for dependency management. To implement user authentication and management, we use the Google Firebase SDK to query user data from the remote database and create (and verify) user ID Tokens (JSON Web Token, a.k.a. JWT).
-The React application contains three web pages: a login page, a signup page, and a dashboard page that allows the user to manage their account and handle splitting bills. To log in, the React application communicates with the REST API with Axios, and stores the JWT Token in localStorage to save user login status. When performing requests, the JWT Token will be attached to the header, and the server will only return the results when the tokens are valid. Requests update the state of the dashboard with new notifications and send updates to other users on their dashboards as well.
+
+Our project consists of two parts: a front-end React application, and a back-end web application that serves as a REST API for the application. The REST API handles everything from user authentication, creating events (real-life activities that involves a bill, e.g. trip to Seattle, shopping at Target, or having dinner at a local restaurant), to editing items to bills. We utilize Spring Boot as the back-end framework and use Maven for dependency management. To implement user authentication and management, we use the Google Firebase SDK to query user data from the remote database and create (and verify) user ID Tokens (JSON Web Token, a.k.a. JWT).
+
+The React application contains four web pages: a login page, a signup page, a dashboard page, and a bill splitter page that allows the user to manage their account and handle splitting bills. To log in, the React application communicates with the REST API with Axios, and stores the JWT Token in localStorage to save user login status. When performing requests, the JWT Token will be attached to the header, and the server will only return the results when the tokens are valid. When collectively editing bills, every user can add or delete items in the bill. When they make requests to update the bill, they send a WebSocket message to the server. The server, upon receiving the message, updates the bill accordingly, and broadcast updates to all users involved in the bill.
 
 Our project is a hybrid of three different architectural styles: event-driven architecture, client-server architecture, and representational state transfer architecture. Event-driven architecture is used in the React application, where a user-generated event such as onLoginButtonClick causes the web page to send a login HTTP request to the Firebase server, with user credentials as the payload, and, upon receiving the response, navigate the user to the dashboard page. Client-server architecture is manifested in the interaction between the user and the server, where each client HTTP request corresponds to a server response. The representational state transfer architecture is involved with API calls, such as login requests. The request and response body, carrying user email/passwords and tokens respectively, are encapsulated in JSON format. 
 
 ### Low Level Design
+
+A bill splitter must be synchronous and provide real-time updates of bill information. When multiple users are editing the bill, they should see changes made by other users immediately. Traditional methods to achieve such synchronicity require constant polling, which is highly inefficient and increases server loads. In order to achieve high efficiency, we use the WebSocket protocol. WebSocket is an application-layer protocol that thinly wraps the transport-layer TCP protocol. It allows a server and a client to communicate bi-directionally once they establish a connection. It is unlike the traditional HTTP requests, where a client actively requests for information and a server only passively replies to client requests. In addition, the server can broadcast a message to all recipients. Multicasting is not anything easily achievable with pure HTTP. 
 
 #### Database Diagram
 
