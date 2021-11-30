@@ -20,7 +20,11 @@ export default function Dashboard({ props }) {
     };
 
     const handleCreate = () => {
-        handleCreateNewEvent(token, eventName)
+        if (eventName.trim().length==0){
+            alert("Please enter the event name!")
+            return;
+        }
+        handleCreateNewEvent(token, eventName.trim())
             .then(res => {
                 console.log(res.data);
                 navigate("/splitter/" + res.data.id)
@@ -37,7 +41,10 @@ export default function Dashboard({ props }) {
     };
 
     const handleJoin = () => {
-        
+        if (eventId.trim().length==0){
+            alert("Please enter the event ID!")
+            return;
+        }
         handleJoinEvent(token, eventId.trim())
             .then(res => {
                 console.log(res.data);

@@ -2,11 +2,13 @@ package com.group1.billsplitter.entities.requests;
 
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Component
 public class CreateEventRequest {
     @NotNull
+    @NotEmpty
     private String eventName;
 
     public String getEventName() {
