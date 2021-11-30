@@ -1,2 +1,105 @@
-# Project Report
+# Project Report: Bill Splitter
+
+## Overview
+
+### Executive Summary
+
+Bill Splitter is a web application that allows users to input the total amount of a bill and split the bill between a variable number of friends. Those friends receive payment requests from the user and have the ability to pay the friend back through different payment methods. The money is then deposited in the user’s payment account. In many situations one person pays the bill for convenience, and this app can easily determine how each friend should pay back that one person.
+
+### Project Lifecycle
+
+We went with waterfall because our project is relatively small and we knew all of the requirements up front and there is a relatively short timeframe for the project.
+
+### Distribution of Work
+
+Enioluwa Daniel Adebisi - Assisted front end 
+Mukhtar Kussaiynbekov - Deploy Spring and React applications to App Engine, Implement REST APIs using Google Cloud MySQL database
+Zach McGee - Setup Spring application, Dashboard page, Team manager
+Samuel Zhang - Testing, Item submission input validation
+Chunhao Zou - Item submission, Bill splitting function, Authentication
+
+### Definitions of Acronyms
+
+| Term                 | Definition                                                                                                                                                                                                   |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| GCP                  | Google Cloud Platform, a suite of cloud computing services such as web app hosting, database hosting, or virtual machine provided by Google.                                                                 |
+| HTML                 | HyperText Markup Language is a markup language that defines the structure of a web page                                                                                                                      |
+| CSS                  | Cascading Style Sheets is a styling language that describes what the visual representation of different elements on a web page should be like                                                                |
+| JS                   | JavaScript is a high-level, just-in-time compiled programming language used in a browser                                                                                                                     |
+| JWT                  | JSON Web Token. It contains a header that specifies encryption information, a payload that tells the information of a user, and a signature the back-end server uses to check whether the user is legitimate |
+| Firebase             | A platform developed by Google for building web apps. It contains data storage and authentication functionalities                                                                                            |
+| API                  | Application programming interface                                                                                                                                                                            |
+| Test Case            | A set of conditions, input variables, testing procedure, and expected results that is being executed to determine whether an application is working correctly                                                |
+| Finite State Machine | Represents a finite number of states and the events or actions that cause the transitions between the states. Abbreviated as FSM.                                                                            |
+| Test #               | Test Case Number / Identifier                                                                                                                                                                                |
+| Requirement          | Requirement that the test cases are validating  (number / identifier)                                                                                                                                        |
+| Action               | Action to perform or input to produce                                                                                                                                                                        |
+| Expected Result      | Result expected when action is complete                                                                                                                                                                      |
+| Actual Result        | What was actually seen                                                                                                                                                                                       |
+| P / F                | Pass / Fail indicator. Checkmark = Pass. “F” = Fail                                                                                                                                                          |
+| Notes                | Additional notes, error messages, or other information about the test.                                                                                                                                       |
+
+## Design
+
+### Considerations
+
+#### Assumptions
+
+Continuous connection of internet (server requests and page requests are handled non statically and require authentication, without internet the page will not work)
+Assumed they were accessing from a web browser and not mobile
+Accessed via a browser supporting HTML5, JS, CSS, JS, 
+
+#### Constraints
+
+Time constraint (3-4 weeks total)
+Team scheduling conflicts with the Holidays and final assignments for other classes
+Project had to be more complex than Project 1
+
+### Architectural Design
+
+#### Overview
+Our project consists of two parts: a front-end React application, and a back-end web application that serves as a REST API for the application. The REST API contains three functionalities: user creation, user login validation, and wrapping the Google Places API. We utilize Spring Boot as the back-end framework and use Maven for dependency management. To implement user authentication and management, we use the Google Firebase SDK to query user data from the remote database and create (and verify) user ID Tokens (JSON Web Token, a.k.a. JWT).
+The React application contains three web pages: a login page, a signup page, and a dashboard page that allows the user to manage their account and handle splitting bills. To log in, the React application communicates with the REST API with Axios, and stores the JWT Token in localStorage to save user login status. When performing requests, the JWT Token will be attached to the header, and the server will only return the results when the tokens are valid. Requests update the state of the dashboard with new notifications and send updates to other users on their dashboards as well.
+
+Our project is a hybrid of three different architectural styles: event-driven architecture, client-server architecture, and representational state transfer architecture. Event-driven architecture is used in the React application, where a user-generated event such as onLoginButtonClick causes the web page to send a login HTTP request to the Firebase server, with user credentials as the payload, and, upon receiving the response, navigate the user to the dashboard page. Client-server architecture is manifested in the interaction between the user and the server, where each client HTTP request corresponds to a server response. The representational state transfer architecture is involved with API calls, such as login requests. The request and response body, carrying user email/passwords and tokens respectively, are encapsulated in JSON format. 
+
+### Low Level Design
+
+#### Database Diagram
+
+
+#### Sequence Diagram
+
+
+#### Component Diagram
+
+## Testing
+
+We conduct both unit testing and system testing. For unit testing, the process is fully automated, with just inputs and expected outputs given. We deem the testing process complete if and only if the unit tests show that no test cases fail. For system testing, a test result is accepted if and only if all the desired outputs outlined in section 4 have been achieved.
+
+#### Bug Tracking
+
+Bug tracking will be done through Github (specifically, the "Issues" feature). This allows us to easily assign fixing a bug to specific people and the status of the issue. This also enables easy tracking of the changes made to resolve bugs if we link pull requests to an issue, so others can check if the issue is really fixed or if a particular change addressing a bug breaks anything else (which likely implies some underlying logic is unviable).
+
+### Test Strategy
+
+The main types of testing done for this project are unit testing and system testing. 
+Unit testing is to be relevant for the individual frontend components: the dashboard and authentication pages. The login, signup, and dashboard pages’ inputs are based on user input into text fields and the response from a third-party API or our backend REST API, so the majority of the test cases revolve around user inputs being valid parameters for the APIs and the response from the API (i.e. Firebase Authentication returning whether the user credentials are valid).
+
+Not very much testing needs to be done on the backend since it is composed of existing  frameworks (Springboot) that should be correct on their own and simple database calls for the REST API. However, testing is necessary to ensure the modules we produced are compatible with the system they rely on. System testing makes the most sense for this project since there are no use cases where modules are used individually/separately and the project is relatively small. The four main components are authentication (login/signup frontend), the dashboard, Firebase Admin (managing cookies for dashboard access), and Springboot (server backend). They are very difficult to separate and should be tested as a whole. The main testing method used to ensure integration will be model-based testing, since there are very discrete states that the program is spent in (signing up, logging in, logged in/accessing clean dashboard, logged in/loaded dashboard results). White-box testing would take too much time for this project, since there are many branches/conditions that do not significantly change much (i.e. long if-else chains for input validation) and can be tested by unit testing anyways.
+
+Since this is a relatively small-scale project, we don't have a lot of non-functional requirements that would significantly impact the application. Most relevant would be determining usability and efficiency. Looking at the browser developer console, most of the loading time is spent waiting for responses from external APIs, so the application is efficient enough. Usability is tested by asking a team member who did not work on the interface to use the application without seeing it before and asking for feedback.
+
+### Test Cases
+
+
+### Items Not Covered by These Test Cases
+
+Our test cases assume that the user has a reliable Internet connection and do not cover the situation when the user encounters an Internet disruption. In these cases, a software failure might happen.
+
+We assume that the user uses a modern operating system like Windows 10 (or newer) or Mac OS Big Sur (or newer) with a modern browser that supports HTML5 and ES6 JavaScript syntax. Our web application may not be displayed properly in an outdated web browser such as the Interner Explorer.
+
+We assume that the user allows cookies. If cookies are disabled, the user’s login information will not be stored, and he/she will not be able to access the dashboard.
+
+We mainly utilize black-box testing in our application, and therefore may not be able to consider every possible combination of user input and associated software outputs. A more rigorous testing technique such as MC/DC testing provides a better guarantee of higher software quality.
 
