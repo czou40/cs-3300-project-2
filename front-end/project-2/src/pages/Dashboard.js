@@ -71,21 +71,27 @@ export default function Dashboard({ props }) {
         <p>You do not have any events.</p>;
     return (
         <div className="dashboard">
-            <h1>Hello, {userName}</h1>
-            <button onClick={() => {
-                handleLogout()
-                    .then(() => {
-                        navigate("/login");
-                    });
-            }}>Log out</button>
-            <p>My Events</p>
-            {displayedEvents}
-            <p>Create new Event</p>
-            <input type='text' required value={eventName} onChange={(e) => setEventName(e.target.value)} placeholder="New Event Name" />
-            <button onClick={handleCreate}>Create new event</button>
-            <p>Join Event</p>
-            <input type='text' required value={eventId} onChange={(e) => setEventId(e.target.value)} placeholder="Existing Event ID" />
-            <button onClick={handleJoin}>Join Existing event</button>
+            <div className="form">
+                <div className="logout">
+                    <button onClick={() => {
+                        handleLogout()
+                            .then(() => {
+                                navigate("/login");
+                            });
+                    }}>Log out</button>
+                </div>
+                <h1>Hello, {userName}</h1>
+                <h4>Create New Event</h4>
+                <input type='text' required value={eventName} onChange={(e) => setEventName(e.target.value)} placeholder="New Event Name" />
+                <button onClick={handleCreate}>Create new event</button>
+                <h4>Join Event</h4>
+                <input type='text' required value={eventId} onChange={(e) => setEventId(e.target.value)} placeholder="Existing Event ID" />
+                <button onClick={handleJoin}>Join Existing event</button>
+                <div className="my-events">
+                    <h4>My Events</h4>
+                    {displayedEvents}
+                </div>
+            </div>
         </div>
     )
 }
