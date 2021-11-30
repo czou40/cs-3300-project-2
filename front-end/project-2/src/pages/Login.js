@@ -34,11 +34,11 @@ export default function Login(props) {
                     </div>
                 </div>
                 <form className="login-form" onSubmit={login}>
-                    <input type="text" placeholder="Username" required value={email} onChange={(e) => setEmail(e.target.value)} />
+                    <input type="text" placeholder="Email" required value={email} onChange={(e) => setEmail(e.target.value)} />
                     <input type="password" placeholder="Password" required value={password} onChange={(e) => setPassword(e.target.value)} />
                     <p id="error" style={{ display: error ? "block" : "none" }}>{error}</p>
                     <button>login</button>
-                    <p className="message">Not registered?<Link to='/signup' >Create an account</Link></p>
+                    <p className="message">Not registered?<Link to='/signup'>Create an account</Link></p>
                 </form>
             </div>
         </div>
