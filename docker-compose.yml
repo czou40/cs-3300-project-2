@@ -1,0 +1,29 @@
+networks:
+    web2:
+        external: true
+
+services:
+    # CaddyServer reverse proxy
+    caddy:
+        restart: always
+        image: caddy:2-alpine
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./Caddyfile:/etc/caddy/Caddyfile
+        networks:
+            - web2
+
+    # Spring boot web app
+    project2:
+        restart: always
+        build:
+            context: .
+            dockerfile: ./Dockerfile
+        expose:
+            - 8080
+        command:
+            "java -jar /app.jar"
+        networks:
+            - web2

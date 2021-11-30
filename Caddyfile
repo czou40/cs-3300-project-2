@@ -1,0 +1,9 @@
+{
+    email czou40@gatech.edu
+    # acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
+}
+
+https://3300-project-2.api.czou.me {
+    reverse_proxy project2:8080
+}
+
