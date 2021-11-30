@@ -13,30 +13,29 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-
 header .header{
   background-color: #fff;
   height: 45px;
 }
 header a img{
   width: 134px;
-margin-top: 4px;
+  margin-top: 4px;
 }
-.login-page {
+.signup-page {
   width: 360px;
   padding: 8% 0 0;
   margin: auto;
 }
-.login-page .form .login{
+.signup-page .signup{
   margin-top: -31px;
-margin-bottom: 26px;
+  margin-bottom: 26px;
 }
 .form {
   position: relative;
   z-index: 1;
   background: #FFFFFF;
   max-width: 360px;
-  margin: 0 auto 100px;
+  margin: auto;
   padding: 45px;
   text-align: center;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);

@@ -9,7 +9,6 @@ export default function Dashboard({ props }) {
     const user = useUser();
     const [eventName, setEventName] = useState("");
     const [eventId, setEventId] = useState("");
-
     const userName = user ? user.displayName : "Unknown";
     const navigate = useNavigate();
     const token = useIdToken();

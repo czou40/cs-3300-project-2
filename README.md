@@ -5,7 +5,7 @@ Team Members: Enioluwa Daniel Adebisi, Mukhtar Kussaiynbekov, Zach McGee, Samuel
 ### Workflow
 
 To use the deployed version, go to:
-[link here]
+https://bill-splitter-frontend-333603.uc.r.appspot.com
 
 To run the backend of the project, follow these steps:
 1. install Maven
@@ -14,12 +14,14 @@ To run the backend of the project, follow these steps:
 4. run command `mvn spring-boot:run`
 
 To run the frontend of the project, follow these steps:
-1. install npm
-2. run command `npm install`
-3. run command `npm run start`
+1. navigate to `\front-end\project2`
+2. install npm
+3. run command `npm install`
+4. run command `npm run start`
 
-### Usage
-[incomplete]
+To run tests, follow these steps:
+1. navigate to `\front-end\project2`
+2. run command `npm run test`
 
 ### Software
 - `\src\main\java` contains the backend code
