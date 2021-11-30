@@ -5,7 +5,7 @@ import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import SockJsClient from 'react-stomp';
 import Item from '../components/Item';
 import { useIdToken, handleLogout, useUser, WS } from '../api';
-
+import '../billsplitter.css';
 
 const initialOptions = {
     "client-id": "Adkjwefh_LAksnx2SC4DlZHGttsu1vhnngRkhRKjYQ-jO3ir4u0x6gkbVb2rq5kZ68tpQLIv_YmB0efU"
@@ -76,14 +76,18 @@ export default function BillSplitter(props) {
                     </div>
                     <h1>Bill Splitter</h1>
                     {event ? <h2>Event Name: {event.eventName}</h2> : null}
-                    {event ? <h2>Payer: {event.payer.name} ({event.payer.paypalEmail})</h2> : null}
-                    {event ? <h2>Attendees:</h2> : null}
-
-                    {event ? event.attendees.map(i => <h3 key={i.email}>{i.name}</h3>) : null}
+                    {event ? <p>Event ID: {id}</p> : null}
+                    {event ? <p>Payer: {event.payer.name} ({event.payer.paypalEmail})</p> : null}
+                    {event ? <p>Attendees:</p> : null}
+                    <ol>
+                        {event ? event.attendees.map(i => <li className="attendee" key={i.email}>{i.name}</li>) : null}
+                    </ol>
                     <button onClick={() => {
                         navigate("/dashboard");
                     }}>Return to Dashboard</button>
+                    <h3>Items</h3>
                     {displayedItems}
+                    <h3>Add Item</h3>
                     <label>Item Name:</label>
                     <input type="text" value={nameValue} onChange={(e) => { setNameValue(e.target.value) }} />
                     <br />
@@ -93,7 +97,8 @@ export default function BillSplitter(props) {
                     <label>Quantity:</label>
                     <input type="number" step="1" value={quantityValue} onChange={(e) => { setQuantityValue(e.target.value) }} />
                     <br />
-                    <button onClick={handleSend}>Update Item</button>
+                    <button onClick={handleSend}>Add Item</button>
+                    <h3>Payment</h3>
                     {payment != null ?
                         (payment >= 0 ?
                             <p>You need to pay ${payment} to {event.payer.name} ({event.payer.paypalEmail})</p>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { handleCreateNewEvent, handleLogout, useEvents, useIdToken, useUser, handleJoinEvent } from '../api.js';
 import Event from '../components/Event.js';
+import '../dashboard.css';
 
 
 export default function Dashboard({ props }) {

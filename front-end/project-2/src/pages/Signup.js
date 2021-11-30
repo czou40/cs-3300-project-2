@@ -2,7 +2,7 @@ import React,{ useState } from 'react';
 import { handleSignup, useIdToken } from '../api';
 import {Link, Navigate} from 'react-router-dom';
 import {validateEmail} from '../util'
-
+import '../signup.css';
 
 function Signup() {
     const [name, setName] = useState("");

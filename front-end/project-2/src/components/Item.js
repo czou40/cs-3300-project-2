@@ -2,12 +2,13 @@ import React from 'react';
 
 export default function Item({name, price, quantity, orderer}) {
     return (
-        <div style={{margin:20,backgroundColor:'antiquewhite'}}>
-            <p>{'Name: ' + name}</p>
-            <p>{'Price: ' + price}</p>
-            <p>{'Quantity: ' + quantity}</p>
-            <p>{'Orderer: ' + orderer.name}</p>
-
+        <div className="item">
+            {'Name: ' + name}
+            <div className="details">
+                <span>{'Price: $' + price}</span>
+                <span>{'Quantity: ' + quantity}</span>
+                <span>{'Orderer: ' + orderer.name}</span>
+            </div>
         </div>
     )
 }
