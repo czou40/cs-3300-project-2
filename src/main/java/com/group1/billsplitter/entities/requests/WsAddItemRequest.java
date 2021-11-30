@@ -4,22 +4,28 @@ import lombok.*;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Nonnegative;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 @Component
 public class WsAddItemRequest {
     @NotNull
+    @NotEmpty
     private String token;
     @NotNull
+    @NotEmpty
     private String eventId;
     @NotNull
     @Nonnegative
+    @NotEmpty
     private long price;
     @NotNull
+    @NotEmpty
     private String name;
     @NotNull
     @Positive
+    @NotEmpty
     private int quantity;
 
     public double getPrice() {
